@@ -1293,7 +1293,7 @@ bool HLSLParser::ParseTopLevel(HLSLStatement*& statement)
     //const char*  typeName = NULL;
     //int          typeFlags = false;
 
-    bool doesNotExpectSemicolon = false;
+    bool doesNotExpectSemicolon = true;
 
     if (Accept(HLSLToken_Struct))
     {
