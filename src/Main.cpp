@@ -62,7 +62,7 @@ void c_main(){
 	Language language = Language_GLSL;
 
 	
-			PrintUsage();
+		//	PrintUsage();
 	
 			target = Target_FragmentShader;
 	
@@ -110,17 +110,7 @@ void c_main(){
 
 		std::cout << generator.GetResult();
 	}
-	else if (language == Language_Metal)
-	{
-		MSLGenerator generator;
-		if (!generator.Generate( &tree, MSLGenerator::Target(target), entryName ))
-		{
-			Log_Error( "Translation failed, aborting\n" );
-			return;
-		}
 
-		std::cout << generator.GetResult();
-	}
 }
 
 extern"C"{
