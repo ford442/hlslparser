@@ -9,6 +9,8 @@
 #include <iostream>
 #include <emscripten.h>
 
+using namespace M4;
+
 enum Target
 {
     Target_VertexShader,
@@ -50,8 +52,6 @@ void PrintUsage()
 		<< " -legacyhlsl generate legacy HLSL\n"
 		<< " -metal      generate MSL\n";
 }
-
-static inline void(*jss)(){&js_main};
 
 void c_main(){
 		// Parse arguments
@@ -263,6 +263,8 @@ function Key(e){
 pnnl.addEventListener('keydown',Key);
 
 });
+
+static inline void(*jss)(){&js_main};
 
 int main(void){
 using namespace M4;
