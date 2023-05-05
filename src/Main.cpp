@@ -22,7 +22,6 @@ enum Language
 	Language_GLSL,
 	Language_HLSL,
 	Language_LegacyHLSL,
-	Language_Metal,
 };
 
 std::string ReadFile( const char* fileName )
@@ -68,11 +67,11 @@ void c_main(){
 	
 		//	target = Target_VertexShader;
 	
-			language = Language_GLSL;
+		//	language = Language_GLSL;
 	
 		//	language = Language_HLSL;
 
-		//	language = Language_LegacyHLSL;
+			language = Language_LegacyHLSL;
 
 	// Read input file
 	const std::string source = ReadFile( fileName );
