@@ -53,9 +53,9 @@ void PrintUsage()
 }
 
 void c_main(){
-		// Parse arguments
+	
 	const char* fileName = "./shader/shader.hlsl";
-	const char* entryName = "shader.hlsl";
+	const char* entryName = "./shader/shader.hlsl";
 
 	Target target = Target_FragmentShader;
 	Language language = Language_GLSL;
@@ -90,7 +90,7 @@ void c_main(){
 	if (language == Language_GLSL)
 	{
 		GLSLGenerator generator;
-		if (!generator.Generate( &tree, GLSLGenerator::Target(target), GLSLGenerator::Version_140, entryName ))
+		if (!generator.Generate( &tree, GLSLGenerator::Target(target), GLSLGenerator::Version_300_ES, entryName ))
 		{
 			Log_Error( "Translation failed, aborting\n" );
 			return;
