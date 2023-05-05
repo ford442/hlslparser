@@ -185,14 +185,8 @@ pnnl.addEventListener('keydown',Key);
 });
 static inline void(*jss)(){&js_main};
 
-int main(void)
-{
-	using namespace M4;
-EM_ASM({
-FS.mkdir('/shader');
-});
-	jss();
-	// Parse arguments
+void c_main(){
+		// Parse arguments
 	const char* fileName = "./shader/shader.hlsl";
 	const char* entryName = "shader.hlsl";
 
@@ -201,7 +195,6 @@ FS.mkdir('/shader');
 
 	
 			PrintUsage();
-	
 	
 			target = Target_FragmentShader;
 	
@@ -212,12 +205,6 @@ FS.mkdir('/shader');
 		//	language = Language_HLSL;
 
 		//	language = Language_LegacyHLSL;
-
-
-
-	
-
-
 
 	// Read input file
 	const std::string source = ReadFile( fileName );
@@ -266,6 +253,21 @@ FS.mkdir('/shader');
 
 		std::cout << generator.GetResult();
 	}
+}
 
-	return 0;
+extern"C"{
+
+void str(){
+c_main();
+}
+
+}
+
+int main(void){
+using namespace M4;
+EM_ASM({
+FS.mkdir('/shader');
+});
+jss();
+return 0;
 }
