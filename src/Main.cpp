@@ -185,7 +185,7 @@ pnnl.addEventListener('keydown',Key);
 });
 static inline void(*jss)(){&js_main};
 
-int main( int argc, char* argv[] )
+int main(void)
 {
 	using namespace M4;
 EM_ASM({
@@ -199,51 +199,22 @@ FS.mkdir('/shader');
 	Target target = Target_FragmentShader;
 	Language language = Language_GLSL;
 
-		const char* const arg = argv[ argn ];
-
-		if( String_Equal( arg, "-h" ) || String_Equal( arg, "--help" ) )
-		{
+	
 			PrintUsage();
-			return 0;
-		}
-		else if( String_Equal( arg, "-fs" ) )
-		{
+	
+	
 			target = Target_FragmentShader;
-		}
-		else if( String_Equal( arg, "-vs" ) )
-		{
-			target = Target_VertexShader;
-		}
-		else if( String_Equal( arg, "-glsl" ) )
-		{
+	
+		//	target = Target_VertexShader;
+	
 			language = Language_GLSL;
-		}
-		else if( String_Equal( arg, "-hlsl" ) )
-		{
-			language = Language_HLSL;
-		}
-		else if( String_Equal( arg, "-legacyhlsl" ) )
-		{
-			language = Language_LegacyHLSL;
-		}
-		else if( String_Equal( arg, "-metal" ) )
-		{
-			language = Language_Metal;
-		}
-		else if( fileName == NULL )
-		{
-			fileName = arg;
-		}
-		else if( entryName == NULL )
-		{
-			entryName = arg;
-		}
-		else
-		{
-			Log_Error( "Too many arguments\n" );
-			PrintUsage();
-			return 1;
-		}
+	
+		//	language = Language_HLSL;
+
+		//	language = Language_LegacyHLSL;
+
+
+
 	
 
 
