@@ -29,8 +29,10 @@ public:
     enum Version
     {
         Version_110, // OpenGL 2.0
+        Version_120, // OpenGL 2.1
         Version_140, // OpenGL 3.1
         Version_150, // OpenGL 3.2
+        Version_330, // OpenGL 3.3
         Version_100_ES, // OpenGL ES 2.0
         Version_300_ES, // OpenGL ES 3.0
     };
@@ -82,10 +84,11 @@ private:
     void OutputAttribute(const HLSLType& type, const char* semantic, AttributeModifier modifier);
     void OutputAttributes(HLSLFunction* entryFunction);
     void OutputEntryCaller(HLSLFunction* entryFunction);
-    void OutputDeclaration(HLSLDeclaration* declaration);
+    void OutputDeclaration(HLSLDeclaration* declaration, const bool skipAssignment);
 	void OutputDeclarationType( const HLSLType& type );
 	void OutputDeclarationBody( const HLSLType& type, const char* name );
     void OutputDeclaration(const HLSLType& type, const char* name);
+    void OutputDeclarationAssignment(HLSLDeclaration* declaration);
     void OutputCast(const HLSLType& type);
 
     void OutputSetOutAttribute(const char* semantic, const char* resultName);
@@ -116,10 +119,12 @@ private:
 
     const char* GetBuiltInSemantic(const char* semantic, AttributeModifier modifier, int* outputIndex = 0);
     const char* GetAttribQualifier(AttributeModifier modifier);
+    void CompleteConstructorArguments(HLSLExpression* expression, HLSLBaseType dstType);
+    void OutputMatrixCtors();
 
 private:
 
-    static const int    s_numReservedWords = 7;
+    static const int    s_numReservedWords = 9;
     static const char*  s_reservedWord[s_numReservedWords];
 
     CodeWriter          m_writer;
@@ -152,10 +157,15 @@ private:
     char                m_scalarSwizzle4Function[64];
     char                m_sinCosFunction[64];
 	char                m_bvecTernary[ 64 ];
+	char                m_modfFunction[64];
 
     bool                m_error;
 
     char                m_reservedWord[s_numReservedWords][64];
+
+    std::vector<matrixCtor> matrixCtors;
+    std::map<matrixCtor,std::string> matrixCtorsId;
+    std::vector<HLSLDeclaration*> globalVarsAssignments;
 
 };
 
