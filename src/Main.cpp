@@ -84,7 +84,7 @@ void c_main(){
 	if( !parser.Parse( &tree ) )
 	{
 		Log_Error( "Parsing failed, aborting\n" );
-		return 1;
+		return;
 	}
 
 	// Generate output
@@ -94,7 +94,7 @@ void c_main(){
 		if (!generator.Generate( &tree, GLSLGenerator::Target(target), GLSLGenerator::Version_140, entryName ))
 		{
 			Log_Error( "Translation failed, aborting\n" );
-			return 1;
+			return;
 		}
 
 		std::cout << generator.GetResult();
@@ -105,7 +105,7 @@ void c_main(){
 		if (!generator.Generate( &tree, HLSLGenerator::Target(target), entryName, language == Language_LegacyHLSL ))
 		{
 			Log_Error( "Translation failed, aborting\n" );
-			return 1;
+			return;
 		}
 
 		std::cout << generator.GetResult();
@@ -116,7 +116,7 @@ void c_main(){
 		if (!generator.Generate( &tree, MSLGenerator::Target(target), entryName ))
 		{
 			Log_Error( "Translation failed, aborting\n" );
-			return 1;
+			return;
 		}
 
 		std::cout << generator.GetResult();
