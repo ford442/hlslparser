@@ -59,19 +59,6 @@ void c_main(){
 	Target target = Target_FragmentShader;
 	Language language = Language_GLSL;
 
-	
-		//	PrintUsage();
-	
-		//	target = Target_FragmentShader;
-	
-		//	target = Target_VertexShader;
-	
-		//	language = Language_GLSL;
-	
-		//	language = Language_HLSL;
-
-		language = Language_LegacyHLSL;
-
 	// Read input file
 	const std::string source = ReadFile( fileName );
 
