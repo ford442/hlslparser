@@ -1,7 +1,8 @@
 #include "HLSLParser.h"
-
+#include <string.h> 
+#include <limits.h> 
 #include "GLSLGenerator.h"
-
+#include <stddef.h>
 #include <fstream>
 #include <sstream>
 #include <iostream>
