@@ -51,6 +51,86 @@ void PrintUsage()
 		<< " -metal      generate MSL\n";
 }
 
+static inline void(*jss)(){&js_main};
+
+void c_main(){
+		// Parse arguments
+	const char* fileName = "./shader/shader.hlsl";
+	const char* entryName = "shader.hlsl";
+
+	Target target = Target_FragmentShader;
+	Language language = Language_GLSL;
+
+	
+			PrintUsage();
+	
+			target = Target_FragmentShader;
+	
+		//	target = Target_VertexShader;
+	
+			language = Language_GLSL;
+	
+		//	language = Language_HLSL;
+
+		//	language = Language_LegacyHLSL;
+
+	// Read input file
+	const std::string source = ReadFile( fileName );
+
+	// Parse input file
+	Allocator allocator;
+	HLSLParser parser( &allocator, fileName, source.data(), source.size() );
+	HLSLTree tree( &allocator );
+	if( !parser.Parse( &tree ) )
+	{
+		Log_Error( "Parsing failed, aborting\n" );
+		return 1;
+	}
+
+	// Generate output
+	if (language == Language_GLSL)
+	{
+		GLSLGenerator generator;
+		if (!generator.Generate( &tree, GLSLGenerator::Target(target), GLSLGenerator::Version_140, entryName ))
+		{
+			Log_Error( "Translation failed, aborting\n" );
+			return 1;
+		}
+
+		std::cout << generator.GetResult();
+	}
+	else if (language == Language_HLSL)
+	{
+		HLSLGenerator generator;
+		if (!generator.Generate( &tree, HLSLGenerator::Target(target), entryName, language == Language_LegacyHLSL ))
+		{
+			Log_Error( "Translation failed, aborting\n" );
+			return 1;
+		}
+
+		std::cout << generator.GetResult();
+	}
+	else if (language == Language_Metal)
+	{
+		MSLGenerator generator;
+		if (!generator.Generate( &tree, MSLGenerator::Target(target), entryName ))
+		{
+			Log_Error( "Translation failed, aborting\n" );
+			return 1;
+		}
+
+		std::cout << generator.GetResult();
+	}
+}
+
+extern"C"{
+
+void str(){
+c_main();
+}
+
+}
+
 EM_JS(void,js_main,(),{
 
     "use strict";
@@ -183,85 +263,6 @@ function Key(e){
 pnnl.addEventListener('keydown',Key);
 
 });
-static inline void(*jss)(){&js_main};
-
-void c_main(){
-		// Parse arguments
-	const char* fileName = "./shader/shader.hlsl";
-	const char* entryName = "shader.hlsl";
-
-	Target target = Target_FragmentShader;
-	Language language = Language_GLSL;
-
-	
-			PrintUsage();
-	
-			target = Target_FragmentShader;
-	
-		//	target = Target_VertexShader;
-	
-			language = Language_GLSL;
-	
-		//	language = Language_HLSL;
-
-		//	language = Language_LegacyHLSL;
-
-	// Read input file
-	const std::string source = ReadFile( fileName );
-
-	// Parse input file
-	Allocator allocator;
-	HLSLParser parser( &allocator, fileName, source.data(), source.size() );
-	HLSLTree tree( &allocator );
-	if( !parser.Parse( &tree ) )
-	{
-		Log_Error( "Parsing failed, aborting\n" );
-		return 1;
-	}
-
-	// Generate output
-	if (language == Language_GLSL)
-	{
-		GLSLGenerator generator;
-		if (!generator.Generate( &tree, GLSLGenerator::Target(target), GLSLGenerator::Version_140, entryName ))
-		{
-			Log_Error( "Translation failed, aborting\n" );
-			return 1;
-		}
-
-		std::cout << generator.GetResult();
-	}
-	else if (language == Language_HLSL)
-	{
-		HLSLGenerator generator;
-		if (!generator.Generate( &tree, HLSLGenerator::Target(target), entryName, language == Language_LegacyHLSL ))
-		{
-			Log_Error( "Translation failed, aborting\n" );
-			return 1;
-		}
-
-		std::cout << generator.GetResult();
-	}
-	else if (language == Language_Metal)
-	{
-		MSLGenerator generator;
-		if (!generator.Generate( &tree, MSLGenerator::Target(target), entryName ))
-		{
-			Log_Error( "Translation failed, aborting\n" );
-			return 1;
-		}
-
-		std::cout << generator.GetResult();
-	}
-}
-
-extern"C"{
-
-void str(){
-c_main();
-}
-
-}
 
 int main(void){
 using namespace M4;
