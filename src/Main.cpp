@@ -53,7 +53,7 @@ void PrintUsage()
 void c_main(){
 	
 	const char* fileName = "./shader/shader.hlsl";
-	const char* entryName = "./shader/shader.hlsl";
+	const char* entryName = "-fs";
 
 	Target target = Target_FragmentShader;
 	Language language = Language_GLSL;
