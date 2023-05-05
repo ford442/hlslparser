@@ -16,7 +16,6 @@
 
 #include "HLSLTokenizer.h"
 #include "HLSLTree.h"
-#include <string>
 
 namespace M4
 {
@@ -28,10 +27,9 @@ class HLSLParser
 
 public:
 
-    HLSLParser(Allocator* allocator, HLSLTree *tree);
+    HLSLParser(Allocator* allocator, const char* fileName, const char* buffer, size_t length);
 
-    bool Parse(const char *fileName, const char *buffer, size_t length);
-    bool ApplyPreprocessor(const char* fileName, const char* buffer, size_t length, std::string & sourcePreprocessed);
+    bool Parse(HLSLTree* tree);
 
 private:
 
@@ -49,6 +47,7 @@ private:
     bool AcceptIdentifier(const char*& identifier);
     bool ExpectIdentifier(const char*& identifier);
     bool AcceptFloat(float& value);
+	bool AcceptHalf( float& value );
     bool AcceptInt(int& value);
     bool AcceptType(bool allowVoid, HLSLType& type);
     bool ExpectType(bool allowVoid, HLSLType& type);
@@ -74,7 +73,7 @@ private:
     //bool ParseBufferFieldDeclaration(HLSLBufferField*& field);
     bool ParseExpression(HLSLExpression*& expression);
     bool ParseBinaryExpression(int priority, HLSLExpression*& expression);
-    bool ParseTerminalExpression(HLSLExpression*& expression, char &needsExpressionEndChar);
+    bool ParseTerminalExpression(HLSLExpression*& expression, bool& needsEndParen);
     bool ParseExpressionList(int endToken, bool allowEmptyEnd, HLSLExpression*& firstExpression, int& numExpressions);
     bool ParseArgumentList(HLSLArgument*& firstArgument, int& numArguments, int& numOutputArguments);
     bool ParseDeclarationAssignment(HLSLDeclaration* declaration);
@@ -89,7 +88,6 @@ private:
     bool ParsePass(HLSLPass*& pass);
     bool ParsePipeline(HLSLStatement*& pipeline);
     bool ParseStage(HLSLStatement*& stage);
-    bool ParsePreprocessorDefine();
 
     bool ParseAttributeList(HLSLAttribute*& attribute);
     bool ParseAttributeBlock(HLSLAttribute*& attribute);
@@ -122,9 +120,6 @@ private:
     const char* GetFileName();
     int GetLineNumber() const;
 
-    bool ProcessMacroArguments(HLSLMacro* macro, std::string & sourcePreprocessed);
-    HLSLMacro *ProcessMacroFromIdentifier(std::string & sourcePreprocessed, bool &addOriginalSource);
-
 private:
 
     struct Variable
@@ -137,13 +132,12 @@ private:
     Array<HLSLStruct*>      m_userTypes;
     Array<Variable>         m_variables;
     Array<HLSLFunction*>    m_functions;
-    Array<HLSLMacro*>       m_macros;
     int                     m_numGlobals;
 
     HLSLTree*               m_tree;
     
     bool                    m_allowUndeclaredIdentifiers = false;
-    // not used bool                    m_disableSemanticValidation = false;
+    bool                    m_disableSemanticValidation = false;
 };
 
 }
