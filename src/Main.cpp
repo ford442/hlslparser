@@ -1,8 +1,6 @@
 #include "HLSLParser.h"
 
 #include "GLSLGenerator.h"
-#include "HLSLGenerator.h"
-#include "MSLGenerator.h"
 
 #include <fstream>
 #include <sstream>
@@ -87,8 +85,7 @@ void c_main(){
 	}
 
 	// Generate output
-	if (language == Language_GLSL)
-	{
+
 		GLSLGenerator generator;
 		if (!generator.Generate( &tree, GLSLGenerator::Target(target), GLSLGenerator::Version_300_ES, entryName ))
 		{
@@ -97,18 +94,8 @@ void c_main(){
 		}
 
 		std::cout << generator.GetResult();
-	}
-	else if (language == Language_HLSL)
-	{
-		HLSLGenerator generator;
-		if (!generator.Generate( &tree, HLSLGenerator::Target(target), entryName, language == Language_LegacyHLSL ))
-		{
-			Log_Error( "Translation failed, aborting\n" );
-			return;
-		}
+	
 
-		std::cout << generator.GetResult();
-	}
 
 }
 
